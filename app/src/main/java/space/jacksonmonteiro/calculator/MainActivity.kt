@@ -1,25 +1,24 @@
 package space.jacksonmonteiro.calculator
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 private const val STATE_PENDING_OPERATION = "pendingOperation"
 private const val STATE_OPERAND1 = "operand1"
 private const val STATE_OPERAND1_STORED = "operand1Stored"
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var result : EditText
-    private lateinit var newNumber : EditText
-    private val displayOperation by lazy (LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.operation) }
+    private lateinit var result: EditText
+    private lateinit var newNumber: EditText
+    private val displayOperation by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.operation) }
 
     // Operands
-    private var operand1 : Double? = null
-    private var pendingOperation : String = "="
+    private var operand1: Double? = null
+    private var pendingOperation: String = "="
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,24 +28,26 @@ class MainActivity : AppCompatActivity() {
         newNumber = findViewById(R.id.newNumber)
 
         // Data input buttons
-        val button0 : Button = findViewById(R.id.button0)
-        val button1 : Button = findViewById(R.id.button1)
-        val button2 : Button = findViewById(R.id.button2)
-        val button3 : Button = findViewById(R.id.button3)
-        val button4 : Button = findViewById(R.id.button4)
-        val button5 : Button = findViewById(R.id.button5)
-        val button6 : Button = findViewById(R.id.button6)
-        val button7 : Button = findViewById(R.id.button7)
-        val button8 : Button = findViewById(R.id.button8)
-        val button9 : Button = findViewById(R.id.button9)
-        val buttonDecimal : Button = findViewById(R.id.buttonDecimal)
+        val button0: Button = findViewById(R.id.button0)
+        val button1: Button = findViewById(R.id.button1)
+        val button2: Button = findViewById(R.id.button2)
+        val button3: Button = findViewById(R.id.button3)
+        val button4: Button = findViewById(R.id.button4)
+        val button5: Button = findViewById(R.id.button5)
+        val button6: Button = findViewById(R.id.button6)
+        val button7: Button = findViewById(R.id.button7)
+        val button8: Button = findViewById(R.id.button8)
+        val button9: Button = findViewById(R.id.button9)
+        val buttonDecimal: Button = findViewById(R.id.buttonDecimal)
 
         // Operation Numbers
-        val buttonPlus : Button = findViewById(R.id.buttonPlus)
-        val buttonMinus : Button = findViewById(R.id.buttonMinus)
-        val buttonMultiply : Button = findViewById(R.id.buttonMultiply)
-        val buttonDivide : Button = findViewById(R.id.buttonDivide)
-        val buttonCalc : Button = findViewById(R.id.buttonCalc)
+        val buttonPlus: Button = findViewById(R.id.buttonPlus)
+        val buttonMinus: Button = findViewById(R.id.buttonMinus)
+        val buttonMultiply: Button = findViewById(R.id.buttonMultiply)
+        val buttonDivide: Button = findViewById(R.id.buttonDivide)
+        val buttonCalc: Button = findViewById(R.id.buttonCalc)
+        val buttonNegative: Button = findViewById(R.id.buttonNegative)
+        val buttonClear: Button = findViewById(R.id.buttonClear)
 
         val listener = View.OnClickListener { v ->
             val b = v as Button
@@ -84,23 +85,45 @@ class MainActivity : AppCompatActivity() {
         buttonMultiply.setOnClickListener(opListener)
         buttonDivide.setOnClickListener(opListener)
         buttonCalc.setOnClickListener(opListener)
+
+        buttonNegative.setOnClickListener {
+            val value = newNumber.text.toString()
+            if (value.isEmpty()) {
+                newNumber.setText("-")
+            } else {
+                try {
+                    var doubleValue = value.toDouble()
+                    doubleValue *= -1
+                    newNumber.setText(doubleValue.toString())
+                } catch (e: NumberFormatException) {
+                    newNumber.setText("")
+                }
+            }
+        }
+
+        buttonClear.setOnClickListener {
+            operand1 = null
+            pendingOperation = "="
+            newNumber.setText("")
+            result.setText("")
+        }
     }
-    
+
     private fun performOperation(value: Double, op: String) {
         if (operand1 == null) {
             operand1 = value
         } else {
             if (pendingOperation == "=") {
-                    pendingOperation = op
+                pendingOperation = op
             }
 
             when (pendingOperation) {
                 "=" -> operand1 = value
                 "/" -> operand1 = if (value == 0.0) {
-                         Double.NaN // Handle divison by zero
-                        } else {
-                          operand1!! / value
-                        }
+                    Double.NaN // Handle divison by zero
+                } else {
+                    operand1!! / value
+                }
                 "*" -> operand1 = operand1!! * value
                 "-" -> operand1 = operand1!! - value
                 "+" -> operand1 = operand1!! + value
