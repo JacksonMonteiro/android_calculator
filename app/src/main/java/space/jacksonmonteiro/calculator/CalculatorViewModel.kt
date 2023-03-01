@@ -1,6 +1,5 @@
 package space.jacksonmonteiro.calculator
 
-import android.widget.Button
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -32,7 +31,7 @@ class CalculatorViewModel : ViewModel() {
         }
     }
 
-    fun operandPressed(op: String)     {
+    fun operandPressed(op: String) {
         try {
             val value = newNumber.value?.toString()?.toDouble()
             if (value != null) {

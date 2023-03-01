@@ -5,10 +5,6 @@ import android.view.View
 import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import space.jacksonmonteiro.calculator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -19,15 +15,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel: CalculatorViewModel by viewModels()
-        val bigDecimalViewModel: BigDecimalViewModel by viewModels();
+        // val viewModel: CalculatorViewModel by viewModels()
+        val viewModel: BigDecimalViewModel by viewModels()
 
-        viewModel.stringResult.observe(this,
-            Observer<String> { stringResult -> binding.result.setText(stringResult) })
-        viewModel.stringNewNumber.observe(this,
-            Observer<String> { stringNumber -> binding.newNumber.setText(stringNumber) })
-        viewModel.stringOperation.observe(this,
-            Observer<String> { stringOperation -> binding.operation.setText(stringOperation) })
+        viewModel.stringResult.observe(this) { stringResult -> binding.result.setText(stringResult) }
+        viewModel.stringNewNumber.observe(this) { stringNumber -> binding.newNumber.setText(stringNumber) }
+        viewModel.stringOperation.observe(this) { stringOperation -> binding.operation.text =  stringOperation }
 
         // Data input buttonss
         val button0: Button = findViewById(R.id.button0)
