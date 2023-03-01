@@ -1,7 +1,9 @@
 package space.jacksonmonteiro.calculator
 
 import android.widget.Button
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
 class CalculatorViewModel : ViewModel() {
@@ -10,9 +12,17 @@ class CalculatorViewModel : ViewModel() {
     private var pendingOperation: String = "="
 
     // Live data
-    val result = MutableLiveData<String>()
-    val newNumber = MutableLiveData<String>()
-    val displayOperation = MutableLiveData<String>()
+    private val result = MutableLiveData<String>()
+    val stringResult: LiveData<String>
+        get() = Transformations.map(result) { it.toString() }
+
+    private val newNumber = MutableLiveData<String>()
+    val stringNewNumber: LiveData<String>
+        get() = newNumber
+
+    private val displayOperation = MutableLiveData<String>()
+    val stringOperation: LiveData<String>
+        get() = displayOperation
 
     fun digitPressed(caption: String) {
         if (newNumber.value != null) {

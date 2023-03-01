@@ -18,9 +18,9 @@ class MainActivity : AppCompatActivity() {
 
         val viewModel: CalculatorViewModel by viewModels()
 
-        viewModel.result.observe(this, Observer<String> { stringResult -> binding.result.setText(stringResult)})
-        viewModel.newNumber.observe(this, Observer<String> { stringNumber -> binding.newNumber.setText(stringNumber)})
-        viewModel.displayOperation.observe(this, Observer<String> { stringOperation -> binding.operation.setText(stringOperation)  })
+        viewModel.stringResult.observe(this, Observer<String> { stringResult -> binding.result.setText(stringResult)})
+        viewModel.stringNewNumber.observe(this, Observer<String> { stringNumber -> binding.newNumber.setText(stringNumber)})
+        viewModel.stringOperation.observe(this, Observer<String> { stringOperation -> binding.operation.setText(stringOperation)  })
 
         // Data input buttonss
         val button0: Button = findViewById(R.id.button0)
